@@ -28,9 +28,27 @@ def generate_array():
     # Call the graph embedding function directly with the generated array
     embed_graph(random_array)  
 
+    return random_array # return the array in order to pass to the alogorithms
+
 def get_index_value(): 
      # outputs the selected index to the window
     value_label.config(text="Selected Value: {}".format(scale_var.get()))
+
+
+def perform_algorithms(): # this function executes the sorting function if they are checked off
+
+
+    generated_array = generate_array() # creating a variable for the generated array
+    
+    # Doing individual if statements here, because they're all independent from each other
+    if merge_sort_var.get():
+        merge_sort(generated_array)
+    if bubble_sort_var.get():
+        bubble_sort(generated_array)
+    if quick_sort_var.get():
+        quick_sort(generated_array)    
+
+
 
 ##################################################################
 ##### Below is all the GUI code ##########################
