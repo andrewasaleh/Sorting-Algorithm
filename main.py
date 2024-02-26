@@ -3,11 +3,15 @@ import pygame as pg # visualization
 import time as time # to calculate execution time
 import random # to generate the array of random numbers
 
-def generate_array(): 
-    print("Generate array button was pressed") # here we will generate a random array
+def generate_array(): # This function generates a random array given the index we had set with the number scale
+    array_size = scale_var.get() # this gets the value of the scale
 
-def get_index_value(): # 
-    value_label.config(text="Selected Value: {}".format(scale_var.get()))
+    random_array = [random.randint(0,500) for i in range(array_size)] # with in the index size, this will create random ints, from 0 to 500
+    
+    value_label.config(text="Array to be sorted: {}".format(random_array)) # outputs the array to the window
+
+def get_index_value(): 
+    value_label.config(text="Selected Value: {}".format(scale_var.get())) # outputs the selected index to the window
 
 
 def merge_sort(arr): # arr is the name of the liss we are passing the the function
@@ -67,7 +71,9 @@ def quick_sort(arr, key = lambda x: x):
         
         return quick_sort(less, key) + pivot + quick_sort(greater, key)
 
-
+##################################################################
+##### Below is all the GUI code ##########################
+# below creates the main window
 
 # below creates the main window
 root = tk.Tk()
@@ -87,11 +93,10 @@ bubble_sort_checkbox.pack()
 
 quick_sort_checkbox = tk.Checkbutton(root, text = "Quick Sort", variable = checkbox_var)
 quick_sort_checkbox.pack()
-###############################################
 
 
 # Create a scale widget
-scale_var = tk.DoubleVar()
+scale_var = tk.IntVar() # Previously was type double fixed to int, as we cannot have double index size
 scale = tk.Scale(root, variable=scale_var, from_=0, to=100, orient="horizontal", length=300)
 scale.pack(pady=20)
 
