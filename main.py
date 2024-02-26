@@ -79,19 +79,19 @@ def quick_sort(arr, key = lambda x: x):
 root = tk.Tk()
 root.title("Pixel Pioneers Gui")
 
-
-# Creaste a variable to hold the state of the checkbox
-checkbox_var = tk.BooleanVar()
-
+# Create variables to hold the state of the checkboxes
+merge_sort_var = tk.BooleanVar()
+bubble_sort_var = tk.BooleanVar()
+quick_sort_var = tk.BooleanVar()
 
 # Sorting algorithm checkboxes are below
-merge_sort_checkbox = tk.Checkbutton(root, text = "Merge Sort", variable = checkbox_var)
+merge_sort_checkbox = tk.Checkbutton(root, text="Merge Sort", variable=merge_sort_var)
 merge_sort_checkbox.pack()
 
-bubble_sort_checkbox = tk.Checkbutton(root, text = "Bubble Sort", variable = checkbox_var)
+bubble_sort_checkbox = tk.Checkbutton(root, text="Bubble Sort", variable=bubble_sort_var)
 bubble_sort_checkbox.pack()
 
-quick_sort_checkbox = tk.Checkbutton(root, text = "Quick Sort", variable = checkbox_var)
+quick_sort_checkbox = tk.Checkbutton(root, text="Quick Sort", variable=quick_sort_var)
 quick_sort_checkbox.pack()
 
 
