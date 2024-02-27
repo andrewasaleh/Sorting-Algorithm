@@ -23,8 +23,8 @@ def generate_array():
     random_array = [random.randint(0, 500) for _ in range(array_size)]  
     
     # outputs the array to the window
-    value_label.config(text="Array to be sorted: {}".format(random_array))  
-    
+    # value_label.config(text="Array to be sorted: {}".format(random_array))  
+
     # Call the graph embedding function directly with the generated array
     embed_graph(random_array)  
 
@@ -41,12 +41,20 @@ def perform_algorithms(): # this function executes the sorting function if they 
     generated_array = generate_array() # creating a variable for the generated array
     
     # Doing individual if statements here, because they're all independent from each other
-    if merge_sort_var.get():
-        merge_sort(generated_array)
-    if bubble_sort_var.get():
-        bubble_sort(generated_array)
-    if quick_sort_var.get():
-        quick_sort(generated_array)    
+def sort_with_merge_sort():
+    if random_array:  # Check if the array has been generated
+        sorted_array = merge_sort(random_array.copy())  # Sort the array using merge sort
+        embed_graph(sorted_array)  # Embed the graph with the sorted array
+
+def sort_with_bubble_sort():
+    if random_array:  # Check if the array has been generated
+        sorted_array = bubble_sort(random_array.copy())  # Sort the array using bubble sort
+        embed_graph(sorted_array)  # Embed the graph with the sorted array
+
+def sort_with_quick_sort():
+    if random_array:  # Check if the array has been generated
+        sorted_array = quick_sort(random_array.copy())  # Sort the array using quick sort
+        embed_graph(sorted_array)  # Embed the graph with the sorted array
 
 
 
@@ -86,21 +94,19 @@ def embed_graph(values):
 root = tk.Tk()
 root.title("Pixel Pioneers Gui")
 
-# Create variables to hold the state of the checkboxes
-merge_sort_var = tk.BooleanVar()
-bubble_sort_var = tk.BooleanVar()
-quick_sort_var = tk.BooleanVar()
+# Frame to hold buttons side by side
+button_frame = tk.Frame(root)
+button_frame.pack(pady=10)
 
-# Sorting algorithm checkboxes are below
-merge_sort_checkbox = tk.Checkbutton(root, text="Merge Sort", variable=merge_sort_var)
-merge_sort_checkbox.pack()
+# Sorting algorithm buttons placed inside the frame
+merge_sort_button = tk.Button(button_frame, text="Merge Sort", command=sort_with_merge_sort)
+merge_sort_button.pack(side=tk.LEFT, padx=5)
 
-bubble_sort_checkbox = tk.Checkbutton(root, text="Bubble Sort", variable=bubble_sort_var)
-bubble_sort_checkbox.pack()
+bubble_sort_button = tk.Button(button_frame, text="Bubble Sort", command=sort_with_bubble_sort)
+bubble_sort_button.pack(side=tk.LEFT, padx=5)
 
-quick_sort_checkbox = tk.Checkbutton(root, text="Quick Sort", variable=quick_sort_var)
-quick_sort_checkbox.pack()
-
+quick_sort_button = tk.Button(button_frame, text="Quick Sort", command=sort_with_quick_sort)
+quick_sort_button.pack(side=tk.LEFT, padx=5)
 
 # Create a scale widget
 scale_var = tk.IntVar()  # Fixed to int as we cannot have a double index size
