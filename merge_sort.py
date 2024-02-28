@@ -1,37 +1,58 @@
-def merge_sort(arr): # arr is the name of the liss we are passing the the function
-    if (len(arr) > 1): # Check if array has more than one element, if it does; it needs sorting
-        mid = (len(arr) // 2)
-        left_sublist = arr[:mid] # Creating left (1st half) sublist and assigning this to "left_side"
-        right_sublist = arr[mid:] # Creating right (2nd half) sublist and assigning this to "right_side"
-
-        merge_sort(left_sublist) # Recursively apply merge sort to the left sublist
-        merge_sort(right_sublist) # Recursively apply merge sort to the right sublist
-
-        i = j = k = 0 # assigning pointers == 0
-    # i = the current index for the LEFT sublist
-    # j = the current index for the RIGHT sublist
-    # k = the current index for the MAIN array(list)
-
-        while ((i < len(left_sublist)) and (j < len(right_sublist))): # continue the loop as long as there are elements in both sublists
-            if (left_sublist[i] < right_sublist[j]): # checking if the current element in the left sublist is less than the current index of the right sublist
-                arr[k] = left_sublist[i] # assign whatever value in the MAIN list to the value of the left sublist
-                i += 1 # keep increasing the index value for the leftsublist
+def merge_sort(arr, start=0, end=None):
+    """
+    This function implements the merge sort algorithm. It takes an array and two optional indices, start and end.
+    If end is None, this is the first call to merge_sort.
+    If the segment size is greater than 1, it needs sorting.
+    """
+    # If end is None, this is the first call to merge_sort
+    if end is None:
+        end = len(arr)
+    # If the segment size is greater than 1, it needs sorting
+    if end - start > 1:
+        mid = (start + end) // 2  # Find the middle point to divide the array into two halves
         
-            else:
-                arr[k] = right_sublist[j] # place the current element right sublist
-                j += 1  # move the pointer in the right sublist
+        # Recursively sort the first half
+        yield from merge_sort(arr, start, mid)
+        # Recursively sort the second half
+        yield from merge_sort(arr, mid, end)
         
-            k += 1 # reguardless where the value was taken from, we have to move to the next index slot for the MAIN list
+        # Merge the sorted halves
+        yield from merge(arr, start, mid, end)
+        # Yield the entire array for visualization after each merge
+        yield arr
 
-        while (i < len(left_sublist)): # handles the scenario where 1 sublist is exhausted before the other
-            arr[k] = left_sublist[i]
-            i += 1
-            k += 1
-
-        while (j < len(right_sublist)): # handles the scenario where 1 sublist is exhausted before the other
-            arr[k] = right_sublist[j]
-            j += 1
-            k += 1
+def merge(arr, start, mid, end):
+    """
+    This function merges two sorted subarrays of arr[].
+    The two subarrays are arr[start:mid] and arr[mid:end].
+    """
+    # Temporary arrays for left and right halves
+    left = arr[start:mid]
+    right = arr[mid:end]
+    k = start  # Initial index of merged subarray
+    i = j = 0  # Initial indexes of first and second halves
     
-    return arr
-    # SUMMARY: Divide, Conquer, Combine
+    # Merge the temp arrays back into arr[start:end]
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            arr[k] = left[i]
+            i += 1
+        else:
+            arr[k] = right[j]
+            j += 1
+        k += 1
+        yield arr  # Yield for visualization after each insertion
+        
+    # Copy the remaining elements of left[], if there are any
+    while i < len(left):
+        arr[k] = left[i]
+        i += 1
+        k += 1
+        yield arr  # Yield for visualization after each insertion
+       
+    # Copy the remaining elements of right[], if there are any
+    while j < len(right):
+        arr[k] = right[j]
+        j += 1
+        k += 1
+        yield arr  # Yield for visualization after each insertion
