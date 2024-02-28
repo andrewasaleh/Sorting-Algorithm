@@ -8,8 +8,10 @@ import numpy as np  # Needed for creating a range of colors
 import time
 
 is_paused = False # Control the pause state
-
 sorting_time = 0  # Time in milliseconds
+
+sorting_times = []
+algorithms = []
 
 # Sets up the window title to allow for renaming
 def set_window_title(title):
@@ -25,6 +27,12 @@ def set_window_title(title):
         figManager.window.set_title(title)
     else:
         print(f"{backend}, your window is broken or not reflecting what you named it")
+
+def update_leaderboard(): # This function adds a "leaderboard" to list off the names and times of the algorithms
+    leaderboard_text = 'Algorithms'.ljust(20) + 'Times (ms)\n\n'
+    for algo, time in zip(algorithms[::-1], sorting_times[::-1]):  # Reverse order to display latest first
+        leaderboard_text += f'{algo:<40}{time:>10.2f}\n'
+    ax.text(0.5, -0.25, leaderboard_text, color='black', ha='center', va='center', fontsize=10, transform=ax.transAxes)
 
 def generate_array(array_size):
     global color_map  # Declare color_map as global to store the mapping for the array values (bars)
@@ -43,6 +51,7 @@ def plot_array(ax, values):
     ax.set_ylabel('Value')
     # Include sorting time in the title
     ax.set_title(f'Algorithm Sorter - Last Sort Time: {sorting_time:.2f} ms')
+    update_leaderboard() # updates the leaderboard with the current times
     fig.canvas.draw_idle()
 
 def perform_sort(event):
@@ -70,6 +79,7 @@ def reset(event):
     array_size = int(slider.val)
     random_array = generate_array(array_size)  # This will also regenerate color_map
     plot_array(ax, random_array)
+
 
 def toggle_pause(event):
     global is_paused
@@ -100,7 +110,8 @@ def perform_merge_sort(event):
             plt.pause(0.1)  # Pause to visualize each step
         
         sorting_time = (time.time() - start_time) * 1000  # Convert to milliseconds
-        print(f"Merge Sort Time: {sorting_time:.2f} ms")  # print to console
+        sorting_times.append(sorting_time)
+        algorithms.append("Merge Sort")
 
 def perform_bubble_sort(event):
     """
@@ -120,7 +131,8 @@ def perform_bubble_sort(event):
             plt.pause(0.1)  # Pause to visualize each step
         
         sorting_time = (time.time() - start_time) * 1000  # Convert to milliseconds
-        print(f"Bubble Sort Time: {sorting_time:.2f} ms")  # print to console
+        sorting_times.append(sorting_time)
+        algorithms.append("Bubble Sort")
 
 def perform_quick_sort(event):
     """
@@ -140,7 +152,8 @@ def perform_quick_sort(event):
             plt.pause(0.1)  # Pause to visualize each step
         
         sorting_time = (time.time() - start_time) * 1000  # Convert to milliseconds
-        print(f"Quick Sort Time: {sorting_time:.2f} ms")  # print to console
+        sorting_times.append(sorting_time)
+        algorithms.append("Quick Sort")
 
 ##################################################################
 ##### Below is all the GUI code ##########################
@@ -150,20 +163,20 @@ if __name__ == "__main__":
     random_array = generate_array(array_size)
     
     fig, ax = plt.subplots()
-    plt.subplots_adjust(bottom=0.3, top=0.75)  # Adjust 'top' to provide space for buttons
+    plt.subplots_adjust(bottom=0.2)  # Adjust 'top' to provide space for buttons
     
     # Set the window title
     set_window_title("Pixel Pioneers GUI")
 
     # Allows for re-adjusting of the graph in the window based on margins
-    plt.subplots_adjust(left=0.1, right=0.9, top=0.6, bottom=0.10)  # Increase top and bottom margins
+    plt.subplots_adjust(left=0.097, right=0.9, top=0.73, bottom=0.213)  # Increase top and bottom margins
 
     sort_algorithm = None  # No default sorting algorithm (user decides)
     
     plot_array(ax, random_array)  # Plotting the unsorted array initially as random and unsorted
 
     slider_ax = fig.add_axes([0.2, 0.85, 0.6, 0.03])  # Moved above
-    slider = Slider(slider_ax, 'Index', 1, 50, valinit=array_size, valstep=1)
+    slider = Slider(slider_ax, 'Array Size', 1, 50, valinit=array_size, valstep=1)
     slider.on_changed(update)
     
     # TOP ROW (above the index slider)
