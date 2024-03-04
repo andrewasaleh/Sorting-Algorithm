@@ -1,4 +1,4 @@
-# Sorting-Algorithm Visualization Application
+# sorting-algorithm Visualization Application
 This Python application visualizes different sorting algorithms using matplotlib. It allows users to interact with the visualization through a GUI, enabling them to see how bubble sort, merge sort, and quick sort algorithms sort an array of random integers in real time.
 
 ## Powerpoint Presentation 
